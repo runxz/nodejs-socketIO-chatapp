@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+ <head>
+ <title>Socket.IO Chat</title>
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+ <style>
+  .btn-green-light {
+    background-color: #90ee90; /* This is a light green color */
+    border-color: #90ee90;
+  }
+  ul{
+    list-style-type:none ;
+    margin: 0;
+    padding: 0;
+  }
+ </style>
+ </head>
+ <body>
+ <div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <h1 class="display-4 text-center">Socket.IO Chat</h1>
+      
+      <div class="card">
+       
+        <div class="card-body text-center">
+            <ul id="messages" class="text-start"></ul>
+          <form action="">
+            <input id="m" autocomplete="off" /><br><br><button class="btn btn-success btn-lg btn-green-light">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+ </div>
+ <script src="/socket.io/socket.io.js"></script>
+ <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+ <script>
+ $(function () {
+   var socket = io();
+   $('form').submit(function(e){
+     e.preventDefault(); // prevents the page reloading
+     socket.emit('chat message', $('#m').val());
+     $('#m').val('');
+     return false;
+   });
+ 
+   socket.on('chat message', function(msg){
+     $('#messages').append($('<li>').text(msg));
+   });
+ });
+ </script>
+ </body>
+</html>
